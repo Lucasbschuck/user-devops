@@ -1,11 +1,11 @@
-name: CI/CD Pipeline - Build and Push
+name: CI/CD Pipeline - Build, Push and Deploy
 
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  build-and-push:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,3 +24,17 @@ jobs:
           context: .
           push: true
           tags: lucasbschuck/user-devops-api:latest
+
+      - name: Deploy na AWS EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.AWS_HOST }}
+          username: ${{ secrets.AWS_USERNAME }}
+          key: ${{ secrets.AWS_PRIVATE_KEY }}
+          script: |
+            sudo docker stop api-producao || true
+            sudo docker rm api-producao || true
+            
+            sudo docker pull lucasbschuck/user-devops-api:latest
+            
+            sudo docker run -d -p 8080:8080 --name api-producao lucasbschuck/user-devops-api:latest

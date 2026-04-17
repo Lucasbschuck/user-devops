@@ -23,5 +23,4 @@ jobs:
         with:
           context: .
           push: true
-          # Aqui damos o nome oficial da sua imagem usando o seu usuário
           tags: lucasbschuck/user-devops-api:latest

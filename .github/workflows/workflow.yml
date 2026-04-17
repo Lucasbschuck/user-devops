@@ -1,4 +1,4 @@
-name: CI/CD Pipeline - Build, Push and Deploy
+name: CI/CD Pipeline - Deploy com Compose
 
 on:
   push:
@@ -25,16 +25,24 @@ jobs:
           push: true
           tags: lucasbschuck/user-devops-api:latest
 
-      - name: Deploy na AWS EC2
+      - name: Copiar arquivo Compose para a AWS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.AWS_HOST }}
+          username: ${{ secrets.AWS_USERNAME }}
+          key: ${{ secrets.AWS_PRIVATE_KEY }}
+          source: "docker-compose.yml"
+          target: "/home/ubuntu/"
+
+
+      - name: Deploy na AWS EC2 com Docker Compose
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.AWS_HOST }}
           username: ${{ secrets.AWS_USERNAME }}
           key: ${{ secrets.AWS_PRIVATE_KEY }}
           script: |
-            sudo docker stop api-producao || true
-            sudo docker rm api-producao || true
-            
-            sudo docker pull lucasbschuck/user-devops-api:latest
-            
-            sudo docker run -d -p 8080:8080 --name api-producao lucasbschuck/user-devops-api:latest
+            cd /home/ubuntu
+            sudo docker-compose pull
+            sudo docker-compose up -d
+            sudo docker image prune -a -f

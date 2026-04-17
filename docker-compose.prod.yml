@@ -3,7 +3,7 @@ services:
   db:
     image: postgres:15-alpine
     container_name: postgres-db
-    restart: always
+    restart: unless-stopped
     environment:
       POSTGRES_DB: userdb
       POSTGRES_USER: lucas
@@ -14,6 +14,7 @@ services:
   api:
     image: lucasbschuck/user-devops-api:latest
     container_name: user-devops-api
+    restart: unless-stopped
     depends_on:
       - db
     ports:

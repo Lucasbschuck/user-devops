@@ -25,15 +25,14 @@ jobs:
           push: true
           tags: lucasbschuck/user-devops-api:latest
 
-      - name: Copiar arquivo Compose para a AWS
+      - name: Copiar arquivo Compose de Produção para a AWS
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.AWS_HOST }}
           username: ${{ secrets.AWS_USERNAME }}
           key: ${{ secrets.AWS_PRIVATE_KEY }}
-          source: "docker-compose.yml"
+          source: "docker-compose.prod.yml"
           target: "/home/ubuntu/"
-
 
       - name: Deploy na AWS EC2 com Docker Compose
         uses: appleboy/ssh-action@v1.0.3
@@ -43,6 +42,10 @@ jobs:
           key: ${{ secrets.AWS_PRIVATE_KEY }}
           script: |
             cd /home/ubuntu
-            sudo docker-compose pull
-            sudo docker-compose up -d
+            
+            mv docker-compose.prod.yml docker-compose.yml
+            
+            sudo docker compose pull
+            sudo docker compose up -d
+            
             sudo docker image prune -a -f

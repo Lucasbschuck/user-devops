@@ -3,7 +3,6 @@
 Registro dos principais problemas enfrentados durante o deploy na AWS e os passos para resolução.
 
 ---
-
 ## 1. API não responde via IP Público (Connection Refused)
 
 * **Problema:** A aplicação compilou e iniciou sem erros no terminal, mas as requisições via navegador/Postman retornavam erro de conexão (Timeout/Connection Refused).

@@ -5,18 +5,24 @@ resource "random_password" "db_password" {
   override_special = "!#$%&*()-_=+[]{}<>:?"
 }
 
-# 2. Guardando a senha no cofre da AWS (Systems Manager Parameter Store)
+# 2. Guardando os dados com o caminho que o Spring espera
 resource "aws_ssm_parameter" "db_password_param" {
-  name  = "/devops-portfolio/db/password"
+  name  = "/devops-portfolio/db/spring.datasource.password" # Nome completo da propriedade
   type  = "SecureString"
   value = random_password.db_password.result
 }
 
-# Também podemos guardar a URL do banco (útil para o Spring Boot depois)
 resource "aws_ssm_parameter" "db_url_param" {
-  name  = "/devops-portfolio/db/url"
+  name  = "/devops-portfolio/db/spring.datasource.url" # Nome completo da propriedade
   type  = "String"
-  value = aws_db_instance.postgres.endpoint
+  # Adicionamos o prefixo JDBC e o nome do banco no final
+  value = "jdbc:postgresql://${aws_db_instance.postgres.endpoint}/userdb"
+}
+
+resource "aws_ssm_parameter" "db_user_param" {
+  name  = "/devops-portfolio/db/spring.datasource.username"
+  type  = "String"
+  value = "lucas"
 }
 
 # 3. O Servidor de Banco de Dados (RDS PostgreSQL)

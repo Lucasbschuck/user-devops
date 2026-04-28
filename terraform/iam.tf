@@ -23,7 +23,7 @@ resource "aws_iam_role_policy" "ssm_read" {
     Version = "2012-10-17"
     Statement = [{
       Effect   = "Allow"
-      Action   = ["ssm:GetParameter", "ssm:GetParameters"]
+      Action   = ["ssm:GetParameter", "ssm:GetParameters", "ssm:GetParametersByPath"]
       Resource = "*" # Em produção, você limitaria ao ARN do seu parâmetro
     }]
   })

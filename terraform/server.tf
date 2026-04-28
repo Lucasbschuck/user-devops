@@ -15,6 +15,7 @@ data "aws_ami" "ubuntu" {
 # 2. O Servidor (EC2)
 resource "aws_instance" "spring_boot_server" {
   ami                    = data.aws_ami.ubuntu.id
+  key_name                    = "LucasNot"
   instance_type          = "t3.micro" # Free Tier
   iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
   associate_public_ip_address = true
@@ -40,7 +41,7 @@ resource "aws_instance" "spring_boot_server" {
                 -e DB_NAME=$DB_NAME \
                 -e DB_USERNAME=$DB_USERNAME \
                 --restart always \
-                lucasbschuck/user-devops:latest
+                lucasbschuck/user-devops-api:latest
               docker run -d \
                 --name watchtower \
                 -v /var/run/docker.sock:/var/run/docker.sock \

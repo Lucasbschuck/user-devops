@@ -11,6 +11,13 @@ resource "aws_security_group" "ec2_sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"] # "0.0.0.0/0" significa "qualquer IP do mundo"
   }
+  ingress {
+      description = "SSH"
+      from_port   = 22
+      to_port     = 22
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
 
 
   # Regra de Saida (Outbound): Para onde o servidor pode ir?

@@ -1,13 +1,19 @@
 spring:
   application:
     name: user-devops
+  config:
+    import: "aws-parameterstore:/devops-portfolio/db/"
   datasource:
-    url: jdbc:postgresql://localhost:5432/userdb
+    url: jdbc:postgresql://${DB_HOST}:5432/userdb
     username: lucas
-    password: 123
+    password: ${password}
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        auto: validate
   web:
     error:
       include-stacktrace: never

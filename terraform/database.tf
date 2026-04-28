@@ -19,6 +19,12 @@ resource "aws_ssm_parameter" "db_url_param" {
   value = "jdbc:postgresql://${aws_db_instance.postgres.endpoint}/userdb"
 }
 
+resource "aws_ssm_parameter" "db_ddl_auto_param" {
+  name  = "/devops-portfolio/db/spring.jpa.hibernate.ddl-auto"
+  type  = "String"
+  value = "update" # Diz para o Hibernate criar as tabelas
+}
+
 resource "aws_ssm_parameter" "db_user_param" {
   name  = "/devops-portfolio/db/spring.datasource.username"
   type  = "String"
@@ -44,10 +50,4 @@ resource "aws_db_instance" "postgres" {
 
   publicly_accessible    = false # Reforça que não tem IP público
   skip_final_snapshot    = true  # Essencial para testes, permite deletar o banco sem erro
-
-  resource "aws_ssm_parameter" "db_ddl_auto_param" {
-    name  = "/devops-portfolio/db/spring.jpa.hibernate.ddl-auto"
-    type  = "String"
-    value = "update" # Diz para o Hibernate criar as tabelas
-  }
 }

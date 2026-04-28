@@ -17,6 +17,7 @@ resource "aws_instance" "spring_boot_server" {
   ami                    = data.aws_ami.ubuntu.id
   instance_type          = "t3.micro" # Free Tier
   iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
+  associate_public_ip_address = true
 
   # Conectando com a rede pública
   subnet_id              = aws_subnet.public_subnet.id

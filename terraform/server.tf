@@ -28,12 +28,10 @@ resource "aws_instance" "spring_boot_server" {
               systemctl start docker
               systemctl enable docker
 
-              # Variáveis para a sua API
               export DB_HOST=${aws_db_instance.postgres.address}
               export DB_NAME=userdb
               export DB_USERNAME=lucas
 
-              # 1. Sobe a sua API (como já fazíamos)
               docker run -d \
                 -p 8080:8080 \
                 --name api-user-devops \
@@ -41,11 +39,7 @@ resource "aws_instance" "spring_boot_server" {
                 -e DB_NAME=$DB_NAME \
                 -e DB_USERNAME=$DB_USERNAME \
                 --restart always \
-                seu-usuario/user-devops:latest
-
-              # 2. Sobe o Watchtower (O Vigia)
-              # Ele monitora o container 'api-user-devops'
-              # O intervalo de 30 segundos é para teste, depois você pode aumentar
+                lucasbschuck/user-devops:latest
               docker run -d \
                 --name watchtower \
                 -v /var/run/docker.sock:/var/run/docker.sock \

@@ -3,6 +3,7 @@ resource "aws_s3_bucket" "terraform_state" {
   # O nome do bucket precisa ser globalmente único em toda a AWS
   # Troque "lucas-devops" por algo único se der erro
   bucket = "lucas-devops-portfolio-tf-state"
+  force_destroy = true
 }
 
 # 2. Ativar versionamento no S3 (Máquina do tempo)

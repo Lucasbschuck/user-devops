@@ -5,3 +5,14 @@ spring:
     import: "aws-parameterstore:/devops-portfolio/db/"
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+management:
+    endpoints:
+      web:
+        exposure:
+          include: health,info,prometheus
+    endpoint:
+      prometheus:
+        enabled: true
+    metrics:
+      tags:
+        application: ${spring.application.name}

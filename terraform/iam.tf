@@ -1,4 +1,4 @@
-# 1. Cria a "Role" (O cargo/função)
+# 1. Cria a "Role"
 resource "aws_iam_role" "ec2_role" {
   name = "ec2-ssm-role"
 
@@ -14,7 +14,7 @@ resource "aws_iam_role" "ec2_role" {
   })
 }
 
-# 2. Cria a "Policy" (O que esse cargo pode fazer)
+# 2. Cria a "Policy"
 resource "aws_iam_role_policy" "ssm_read" {
   name = "ssm-read-permissions"
   role = aws_iam_role.ec2_role.id
@@ -24,12 +24,12 @@ resource "aws_iam_role_policy" "ssm_read" {
     Statement = [{
       Effect   = "Allow"
       Action   = ["ssm:GetParameter", "ssm:GetParameters", "ssm:GetParametersByPath"]
-      Resource = "*" # Em produção, você limitaria ao ARN do seu parâmetro
+      Resource = "*"
     }]
   })
 }
 
-# 3. Cria o "Profile" (O crachá físico que a EC2 'veste')
+# 3. Cria o "Profile"
 resource "aws_iam_instance_profile" "ec2_profile" {
   name = "ec2-ssm-instance-profile"
   role = aws_iam_role.ec2_role.name

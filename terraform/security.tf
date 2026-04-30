@@ -3,13 +3,13 @@ resource "aws_security_group" "ec2_sg" {
   description = "Permite acesso web a API Spring Boot"
   vpc_id      = aws_vpc.main_vpc.id
 
-  # Regra de Entrada (Inbound): Quem pode entrar?
+  # Regra de Entrada (Inbound):
   ingress {
     description = "Permite trafego HTTP da internet"
-    from_port   = 8080 # A porta padrao do Spring Boot
+    from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] # "0.0.0.0/0" significa "qualquer IP do mundo"
+    cidr_blocks = ["0.0.0.0/0"] #
   }
   ingress {
       description = "SSH"
@@ -20,12 +20,12 @@ resource "aws_security_group" "ec2_sg" {
     }
 
 
-  # Regra de Saida (Outbound): Para onde o servidor pode ir?
+  # Regra de Saida (Outbound):
   egress {
     description = "Permite toda a saida para a internet"
     from_port   = 0
     to_port     = 0
-    protocol    = "-1" # "-1" significa "todos os protocolos"
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -39,14 +39,13 @@ resource "aws_security_group" "rds_sg" {
   description = "Permite acesso ao banco apenas vindo da EC2"
   vpc_id      = aws_vpc.main_vpc.id
 
-  # Regra de Entrada (Inbound): A magica acontece aqui
+  # Regra de Entrada (Inbound):
   ingress {
     description     = "Permite conexao apenas do Security Group do Spring Boot"
-    from_port       = 5432 # Porta do PostgreSQL
+    from_port       = 5432
     to_port         = 5432
     protocol        = "tcp"
 
-    # Em vez de liberar IPs, nos liberamos a ID do outro Security Group!
     security_groups = [aws_security_group.ec2_sg.id]
   }
 

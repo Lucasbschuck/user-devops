@@ -6,10 +6,10 @@ terraform {
     }
   }
 backend "s3" {
-    bucket         = "lucas-devops-portfolio-tf-state" # O mesmo nome que você colocou no state.tf
-    key            = "global/s3/terraform.tfstate"     # O caminho da pasta lá dentro do balde
+    bucket         = "lucas-devops-portfolio-tf-state"
+    key            = "global/s3/terraform.tfstate"
     region         = "us-east-1"
-    dynamodb_table = "portfolio-tf-locks"              # O nome da tabela do cadeado
+    dynamodb_table = "portfolio-tf-locks"
     encrypt        = true
   }
 

@@ -1,4 +1,3 @@
-# 1. Consulta: Busca a imagem oficial e atualizada do Ubuntu 22.04
 data "aws_ami" "ubuntu" {
   most_recent = true
   filter {
@@ -9,14 +8,14 @@ data "aws_ami" "ubuntu" {
     name   = "virtualization-type"
     values = ["hvm"]
   }
-  owners = ["099720109477"] # ID da Canonical, criadora do Ubuntu
+  owners = ["099720109477"]
 }
 
 # 2. O Servidor (EC2)
 resource "aws_instance" "spring_boot_server" {
   ami                         = data.aws_ami.ubuntu.id
   key_name                    = "LucasNot"
-  instance_type               = "t3.micro" # Free Tier
+  instance_type               = "t3.micro"
   iam_instance_profile        = aws_iam_instance_profile.ec2_profile.name
   associate_public_ip_address = true
 
@@ -26,7 +25,6 @@ resource "aws_instance" "spring_boot_server" {
 
   user_data = <<-EOF
               #!/bin/bash
-              # Redireciona logs para debugar (se precisar): sudo cat /var/log/user-data.log
               exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
 
               apt-get update -y
@@ -34,7 +32,7 @@ resource "aws_instance" "spring_boot_server" {
               systemctl start docker
               systemctl enable docker
 
-              # 1. Sobe a API (Sem variáveis soltas, o Spring busca no SSM da AWS)
+              # 1. Sobe a API
               docker pull lucasbschuck/user-devops-api:latest
 
               docker run -d \

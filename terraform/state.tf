@@ -15,9 +15,8 @@ resource "aws_s3_bucket_versioning" "state_versioning" {
 # 3. DynamoDB Table
 resource "aws_dynamodb_table" "terraform_locks" {
   name         = "portfolio-tf-locks"
-  billing_mode = "PAY_PER_REQUEST" #
-  hash_key     = "LockID" #
-
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "LockID"
   attribute {
     name = "LockID"
     type = "S"

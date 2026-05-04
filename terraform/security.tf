@@ -18,6 +18,12 @@ resource "aws_security_group" "ec2_sg" {
       protocol    = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
     }
+  ingress {
+      from_port   = 3000
+      to_port     = 3000
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
 
 
   # Regra de Saida (Outbound):
@@ -60,4 +66,5 @@ resource "aws_security_group" "rds_sg" {
   tags = {
     Name = "rds-security-group"
   }
+
 }

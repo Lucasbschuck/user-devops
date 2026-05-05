@@ -74,7 +74,7 @@ resource "aws_subnet" "private_subnet_2" {
 
 # 8. O Grupo de Subnets do Banco de Dados
 resource "aws_db_subnet_group" "db_subnet_group" {
-  name       = "meu-grupo-de-subnets-db"
+  name       = "user-devops-db-subnet-group"
 
   subnet_ids = [
     aws_subnet.private_subnet.id,

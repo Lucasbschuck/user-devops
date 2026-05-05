@@ -54,31 +54,37 @@ resource "aws_instance" "spring_boot_server" {
                   - job_name: 'spring-boot-api'
                     metrics_path: '/actuator/prometheus'
                     static_configs:
-                      - targets: ['localhost:8080']
+                      - targets: ['api-user-devops:8080']
                         labels:
                           application: 'Minha-API-DevOps'
                           instance: 'Servidor-EC2'
                 PROMETHEUS_EOF
 
+                # Cria rede Docker customizada
+                docker network create devops-network
+
                 # Sobe a API
                 docker run -d \
-                  --network host \
+                  --network devops-network \
                   --name api-user-devops \
+                  -p 8080:8080 \
                   --restart always \
                   lucasbschuck/user-devops-api:latest
 
                 # Sobe o Prometheus
                 docker run -d \
-                  --network host \
+                  --network devops-network \
                   --name prometheus \
                   -v /home/ubuntu/prometheus.yml:/etc/prometheus/prometheus.yml \
+                  -p 9090:9090 \
                   --restart always \
                   prom/prometheus:latest
 
                 # Sobe o Grafana
                 docker run -d \
-                  --network host \
+                  --network devops-network \
                   --name grafana \
+                  -p 3000:3000 \
                   --restart always \
                   grafana/grafana:latest
 

@@ -6,10 +6,10 @@ terraform {
     }
   }
 backend "s3" {
-    bucket         = "lucas-devops-portfolio-tf-state"
+    bucket         = "user-devops-tf-state-public-demo"
     key            = "global/s3/terraform.tfstate"
     region         = "us-east-1"
-    dynamodb_table = "portfolio-tf-locks"
+    dynamodb_table = "user-devops-tf-locks"
     encrypt        = true
   }
 

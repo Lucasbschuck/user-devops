@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_DB: userdb
       POSTGRES_USER: lucas
-      POSTGRES_PASSWORD: 123
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-devpassword123}
     ports:
       - "5432:5432"
 
@@ -21,5 +21,5 @@ services:
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/userdb
       - SPRING_DATASOURCE_USERNAME=lucas
-      - SPRING_DATASOURCE_PASSWORD=123
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD:-devpassword123}
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update

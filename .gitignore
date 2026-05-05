@@ -31,3 +31,24 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Terraform ###
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+errored.tfstate
+terraform.tfstate.backup
+
+### Environment Variables ###
+.env
+.env.local
+.env.production
+
+### Logs ###
+*.log
+logs/
+
+### OS ###
+.DS_Store
+Thumbs.db
